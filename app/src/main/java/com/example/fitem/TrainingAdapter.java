@@ -14,12 +14,14 @@ public class TrainingAdapter extends ArrayAdapter<Training> {
 
     private Context context;
     private List<Training> trainings;
+    private TrainingDBHelper dbHelper;
     private boolean isInEditMode = false; // Flagę, która określa, czy lista jest w trybie edycji
 
-    public TrainingAdapter(Context context, List<Training> trainings) {
+    public TrainingAdapter(Context context, List<Training> trainings, TrainingDBHelper dbHelper) {
         super(context, 0, trainings);
         this.context = context;
         this.trainings = trainings;
+        this.dbHelper = dbHelper;
     }
     public void setEditMode(boolean isInEditMode) {
         this.isInEditMode = isInEditMode;
@@ -43,7 +45,9 @@ public class TrainingAdapter extends ArrayAdapter<Training> {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Training trainingToRemove = trainings.get(position);
                 trainings.remove(position); // Usuwa trening
+                dbHelper.deleteTraining(trainingToRemove);
                 notifyDataSetChanged(); // Odświeża widok
             }
         });

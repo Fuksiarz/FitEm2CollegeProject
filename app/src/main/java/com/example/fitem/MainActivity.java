@@ -39,10 +39,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Inicjalizacja danych
-        this.trainings = initializeTrainings();
+
+        TrainingDBHelper dbHelper = new TrainingDBHelper(this);
+        this.trainings = dbHelper.getAllTrainings();
+
         ListView listView = (ListView) findViewById(R.id.listView);
         // Inicjalizacja i ustawienie adaptera
-        this.adapter = new TrainingAdapter(this, trainings);
+        this.adapter = new TrainingAdapter(this, trainings,dbHelper);
         listView.setAdapter(adapter);
 
         // Obsługa kliknięcia elementu listy
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         Button addTrainingButton = findViewById(R.id.addTrainingButton);
+
         addTrainingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String trainingName = input.getText().toString();
-                        trainings.add(new Training(trainingName));
+                        Training newTraining = new Training(trainingName);
+                        trainings.add(newTraining);
+                        dbHelper.insertTraining(trainingName);
                         adapter.notifyDataSetChanged();
                     }
                 });
