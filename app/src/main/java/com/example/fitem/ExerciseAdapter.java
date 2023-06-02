@@ -27,4 +27,10 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
 
         return convertView;
     }
+
+    public void setExercises(List<Exercise> exercises) {
+        clear();
+        addAll(exercises);
+        notifyDataSetChanged();
+    }
 }
