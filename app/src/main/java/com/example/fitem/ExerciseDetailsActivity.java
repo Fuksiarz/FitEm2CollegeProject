@@ -6,6 +6,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,7 +20,11 @@ import com.example.fitem.databinding.ActivityExerciseDetailsBinding;
 
 public class ExerciseDetailsActivity extends AppCompatActivity {
     private Exercise exercise;
-
+    private TextView exerciseNameTextView;
+    private TextView repetitionsTextView;
+    private TextView setsTextView;
+    private Button startTimerButton;
+    private CountDownTimer countDownTimer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

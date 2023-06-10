@@ -51,7 +51,7 @@ public class Exercise implements Serializable {
         this.repetitions = repetitions;
         this.sets = sets;
         this.countdownTime = countdownTime;
-        this.trainingId = trainingId;
+
 
     }
     public Exercise(String name) {

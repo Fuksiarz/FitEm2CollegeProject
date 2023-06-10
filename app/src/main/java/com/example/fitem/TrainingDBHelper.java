@@ -84,6 +84,15 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteExercise(Exercise exercise) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Usuń ćwiczenie
+        db.delete(TABLE_EXERCISES, KEY_ID + " = ?", new String[]{String.valueOf(exercise.getId())});
+
+        db.close();
+    }
+
     public void updateTraining(Training training) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

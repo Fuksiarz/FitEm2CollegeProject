@@ -29,7 +29,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private List<Exercise> exercises;
     private TrainingDBHelper dbHelper;
     private Training training;
-
+    private ExerciseAdapter adapter;
 
     private int currentTrainingId;
     @Override
@@ -44,7 +44,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         this.dbHelper = new TrainingDBHelper(this);
         ListView listView = (ListView) findViewById(R.id.exerciseListView);
-        ExerciseAdapter adapter = new ExerciseAdapter(this, exercises);
+        adapter = new ExerciseAdapter(this, exercises,dbHelper);
         listView.setAdapter(adapter);
 
         Button addExerciseButton = findViewById(R.id.addExerciseButton);
@@ -71,7 +71,7 @@ public class ExerciseActivity extends AppCompatActivity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Kod do edycji listy ćwiczeń
+                adapter.setEditMode(!adapter.isInEditMode());
             }
         });
         addExerciseButton.setOnClickListener(new View.OnClickListener() {

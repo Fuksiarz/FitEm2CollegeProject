@@ -100,13 +100,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private List<Training> initializeTrainings() {
-        List<Training> trainings = new ArrayList<>();
-
-        // Tu dodaj treningi do listy, na przykład:
-         trainings.add(new Training("Trening 1"));
-         trainings.add(new Training("Trening 2"));
-
-        return trainings;
-    }
 }
