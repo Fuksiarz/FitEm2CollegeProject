@@ -48,15 +48,6 @@ public class ExerciseActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         Button addExerciseButton = findViewById(R.id.addExerciseButton);
-        addExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseActivity.this);
-                Exercise exercise = new Exercise("Dodaj ćwiczenie");
-                dbHelper.addExerciseToTraining(exercise, training);
-                // Tutaj musisz zaktualizować listę ćwiczeń po dodaniu nowego ćwiczenia
-            }
-        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -118,6 +109,13 @@ public class ExerciseActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Odśwież adapter tutaj
+        adapter.notifyDataSetChanged();
+    }
+
     private List<Exercise> initializeExercises(int trainingId) {
         TrainingDBHelper dbHelper = new TrainingDBHelper(this);
         List<Exercise> exercises;

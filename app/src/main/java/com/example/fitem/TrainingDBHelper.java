@@ -11,10 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "trainings.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "newes_trainings.db";
+
+//    private static final String DATABASE_NAME = "new_trainings.db";
+    private static final int DATABASE_VERSION = 1;
     private static final String TABLE_EXERCISES = "exercises";
     private static final String KEY_ID = "id";
+    private static final String KEY_TRAINING_ID = "trainingId";
     private static final String KEY_NAME = "name";
     private static final String KEY_REPETITIONS = "repetitions";
     private static final String KEY_SETS = "sets";
@@ -27,34 +30,40 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String SQL_CREATE_TRAININGS_TABLE =  "CREATE TABLE " + "trainings" + " ("
+        // Tworzenie tabeli trainings
+        String SQL_CREATE_TRAININGS_TABLE = "CREATE TABLE " + "trainings" + " ("
                 + "id" + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "name" + " TEXT NOT NULL);";
-
         db.execSQL(SQL_CREATE_TRAININGS_TABLE);
 
-        String CREATE_EXERCISES_TABLE = "CREATE TABLE IF NOT EXISTS exercises ("
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + "name TEXT,"
-                + "repetitions INTEGER,"
-                + "sets INTEGER,"
+        // Tworzenie tabeli exercises
+        String CREATE_EXERCISES_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_EXERCISES + " ("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + KEY_NAME + " TEXT,"
+                + KEY_REPETITIONS + " INTEGER,"
+                + KEY_SETS + " INTEGER,"
                 + "restTime INTEGER,"
-                + "trainingId INTEGER,"
-                + "FOREIGN KEY(trainingId) REFERENCES trainings(id)" + ")";
-
+                + KEY_TRAINING_ID + " INTEGER,"
+                + "countdownTime INTEGER,"
+                + "FOREIGN KEY(" + KEY_TRAINING_ID + ") REFERENCES trainings(id)" + ")";
         db.execSQL(CREATE_EXERCISES_TABLE);
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + "trainings");
-        onCreate(db);
+
+//         Kod do resetowania tabeli
+        if (oldVersion < newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXERCISES);
+            onCreate(db);
+        }
     }
-    public void insertTraining(String name) {
+    public long insertTraining(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
-        db.insert("trainings", null, contentValues);
+        long id = db.insert("trainings", null, contentValues);
         db.close();
+        return id;
     }
 
     public List<Training> getAllTrainings() {
@@ -100,12 +109,78 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
         db.update("trainings", contentValues, "id" + " = ?", new String[] { String.valueOf(training.getId()) });
         db.close();
     }
+
+    public Exercise getExerciseById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_EXERCISES,
+                new String[] { KEY_ID, KEY_NAME, KEY_REPETITIONS, KEY_SETS, KEY_COUNTDOWN_TIME },
+                KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            Exercise exercise = new Exercise();
+
+            // Konwersja id
+            String idString = cursor.getString(0);
+            if (idString != null && !idString.isEmpty()) {
+                try {
+                    exercise.setId(Integer.parseInt(idString));
+                } catch (NumberFormatException nfe) {
+                    Log.e("NumberFormatException", "Could not parse " + nfe);
+                }
+            }
+
+            // Konwersja name
+            exercise.setName(cursor.getString(1));
+
+            // Konwersja repetitions
+            String repetitionsString = cursor.getString(2);
+            if (repetitionsString != null && !repetitionsString.isEmpty()) {
+                try {
+                    exercise.setRepetitions(Integer.parseInt(repetitionsString));
+                } catch (NumberFormatException nfe) {
+                    Log.e("NumberFormatException", "Could not parse " + nfe);
+                }
+            }
+
+            // Konwersja sets
+            String setsString = cursor.getString(3);
+            if (setsString != null && !setsString.isEmpty()) {
+                try {
+                    exercise.setSets(Integer.parseInt(setsString));
+                } catch (NumberFormatException nfe) {
+                    Log.e("NumberFormatException", "Could not parse " + nfe);
+                }
+            }
+
+            // Konwersja countdownTime
+            String countdownTimeString = cursor.getString(4);
+            if (countdownTimeString != null && !countdownTimeString.isEmpty()) {
+                try {
+                    exercise.setCountdownTime(Integer.parseInt(countdownTimeString));
+                } catch (NumberFormatException nfe) {
+                    Log.e("NumberFormatException", "Could not parse " + nfe);
+                }
+            }
+
+            cursor.close();
+            db.close();
+            return exercise;
+
+        } else {
+            return null;
+        }
+    }
+
     public boolean addExerciseToTraining(Exercise exercise, Training training) {
+
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", exercise.getName());
-        contentValues.put("trainingId", training.getId());
-        long result = db.insert("exercises", null, contentValues);
+        contentValues.put(KEY_NAME, exercise.getName());
+        contentValues.put(KEY_TRAINING_ID, training.getId());
+        Log.d("TrainingDBHelper", "Dodawanie ćwiczenia " + exercise.getName() + " do treningu: " + training.getName() + " o id: " + training.getId());
+        long result = db.insert(TABLE_EXERCISES, null, contentValues);
         db.close();
         if (result == -1) {
             return false;
@@ -114,11 +189,34 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
         }
 
     }
+    public int updateExercise(Exercise exercise) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_NAME, exercise.getName());
+            values.put(KEY_REPETITIONS, exercise.getRepetitions());
+            values.put(KEY_SETS, exercise.getSets());
+            values.put(KEY_COUNTDOWN_TIME, exercise.getCountdownTime());
+
+            int rowsAffected = db.update(TABLE_EXERCISES, values, KEY_ID + " = ?", new String[] { String.valueOf(exercise.getId()) });
+
+            db.setTransactionSuccessful();
+            return rowsAffected;
+        } finally {
+            db.endTransaction();
+            db.close();
+        }
+    }
+
     public List<Exercise> getAllExercisesForTraining(int trainingId) {
+
+        Log.d("TrainingDBHelper", "Pobieranie ćwiczeń dla treningu o id " + trainingId);
+
         List<Exercise> exerciseList = new ArrayList<>();
 
         // Select all query
-        String selectQuery = "SELECT  * FROM " + TABLE_EXERCISES + " WHERE " + "trainingId" + " = " + trainingId;
+        String selectQuery = "SELECT  * FROM " + TABLE_EXERCISES + " WHERE " + KEY_TRAINING_ID + " = " + trainingId;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
