@@ -19,7 +19,7 @@ public class Training implements Serializable {
         this.exercises = new ArrayList<>(); // Możemy inicjalizować listę ćwiczeń jako pustą listę
     }
     public Training() {
-        this.name = name;
+        this.name = "";
         this.exercises = new ArrayList<>(); // Możemy inicjalizować listę ćwiczeń jako pustą listę
     }
 

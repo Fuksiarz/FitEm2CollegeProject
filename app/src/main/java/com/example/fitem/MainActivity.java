@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
                 intent.putExtra("training", trainings.get(position));
                 startActivity(intent);
+                adapter.notifyDataSetChanged();
             }
         });
         Button addTrainingButton = findViewById(R.id.addTrainingButton);
@@ -76,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
                         Training newTraining = new Training(trainingName);
                         trainings.add(newTraining);
                         dbHelper.insertTraining(trainingName);
+
+
+                        dbHelper.getAllTrainings();
                         adapter.notifyDataSetChanged();
                     }
                 });

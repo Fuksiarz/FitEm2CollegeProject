@@ -92,7 +92,7 @@ public class ExerciseActivity extends AppCompatActivity {
                         // Dodaj ćwiczenie do listy i aktualizuj adapter
                         List<Exercise> newExerciseList = dbHelper.getAllExercisesForTraining(currentTrainingId);
                         adapter.setExercises(newExerciseList);
-
+                        adapter.notifyDataSetChanged();
 
                     }
                 });

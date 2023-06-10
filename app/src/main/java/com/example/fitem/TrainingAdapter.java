@@ -46,9 +46,11 @@ public class TrainingAdapter extends ArrayAdapter<Training> {
             @Override
             public void onClick(View v) {
                 Training trainingToRemove = trainings.get(position);
-                trainings.remove(position); // Usuwa trening
-                dbHelper.deleteTraining(trainingToRemove);
-                notifyDataSetChanged(); // Odświeża widok
+                dbHelper.deleteExercisesForTraining(trainingToRemove.getId());
+
+                dbHelper.deleteTraining(trainingToRemove.getId()); // Usuń trening na podstawie jego ID
+                trainings.remove(position); // Usuń trening z listy po usunięciu z bazy danych
+                notifyDataSetChanged(); // Odśwież widok
             }
         });
 

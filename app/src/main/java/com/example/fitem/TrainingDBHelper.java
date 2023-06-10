@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "newes_trainings.db";
+    private static final String DATABASE_NAME = "fitEm.db";
 
 //    private static final String DATABASE_NAME = "new_trainings.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_EXERCISES = "exercises";
     private static final String KEY_ID = "id";
-    private static final String KEY_TRAINING_ID = "trainingId";
+    private static final String KEY_TRAINING_ID = "training_Id";
     private static final String KEY_NAME = "name";
     private static final String KEY_REPETITIONS = "repetitions";
     private static final String KEY_SETS = "sets";
@@ -31,7 +31,7 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Tworzenie tabeli trainings
-        String SQL_CREATE_TRAININGS_TABLE = "CREATE TABLE " + "trainings" + " ("
+        String SQL_CREATE_TRAININGS_TABLE = "CREATE TABLE IF NOT EXISTS " + "trainings" + " ("
                 + "id" + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "name" + " TEXT NOT NULL);";
         db.execSQL(SQL_CREATE_TRAININGS_TABLE);
@@ -57,13 +57,13 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
     }
-    public long insertTraining(String name) {
+    public void insertTraining(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
-        long id = db.insert("trainings", null, contentValues);
+        db.insert("trainings", null, contentValues);
         db.close();
-        return id;
+
     }
 
     public List<Training> getAllTrainings() {
@@ -78,6 +78,7 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
                 Training training = new Training();
                 training.setId(Integer.parseInt(cursor.getString(0)));
                 training.setName(cursor.getString(1));
+                Log.d("TrainingDBHelper", "Cwiczenie: " + cursor.getString(1) + " o id: " + cursor.getString(0));
                 trainingList.add(training);
             } while (cursor.moveToNext());
         }
@@ -87,9 +88,12 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
         return trainingList;
     }
 
-    public void deleteTraining(Training training) {
+    public void deleteTraining(int trainingId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete("trainings", "id" + " = ?", new String[] { String.valueOf(training.getId()) });
+        db.delete("exercises", "training_id = ?", new String[]{String.valueOf(trainingId)});
+
+
+        db.delete("trainings", "id = ?", new String[] { String.valueOf(trainingId) });
         db.close();
     }
 
@@ -179,11 +183,15 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, exercise.getName());
         contentValues.put(KEY_TRAINING_ID, training.getId());
-        Log.d("TrainingDBHelper", "Dodawanie ćwiczenia " + exercise.getName() + " do treningu: " + training.getName() + " o id: " + training.getId());
+
         long result = db.insert(TABLE_EXERCISES, null, contentValues);
         db.close();
+        Log.d("TrainingDBHelper", "Dodawanie ćwiczenia " + exercise.getName() + " do treningu: " + training.getName() + " o id: " + training.getId());
+
         if (result == -1) {
+
             return false;
+
         } else {
             return true;
         }
@@ -192,6 +200,7 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
     public int updateExercise(Exercise exercise) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
+        int rowsAffected = 0;
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_NAME, exercise.getName());
@@ -199,19 +208,24 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
             values.put(KEY_SETS, exercise.getSets());
             values.put(KEY_COUNTDOWN_TIME, exercise.getCountdownTime());
 
-            int rowsAffected = db.update(TABLE_EXERCISES, values, KEY_ID + " = ?", new String[] { String.valueOf(exercise.getId()) });
+            rowsAffected = db.update(TABLE_EXERCISES, values, KEY_ID + " = ?", new String[] { String.valueOf(exercise.getId()) });
 
             db.setTransactionSuccessful();
-            return rowsAffected;
+
         } finally {
             db.endTransaction();
             db.close();
         }
+        return rowsAffected;
+    }
+    public void deleteExercisesForTraining(int trainingId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EXERCISES, KEY_TRAINING_ID + " = ?", new String[] { String.valueOf(trainingId) });
+        db.close();
     }
 
     public List<Exercise> getAllExercisesForTraining(int trainingId) {
 
-        Log.d("TrainingDBHelper", "Pobieranie ćwiczeń dla treningu o id " + trainingId);
 
         List<Exercise> exerciseList = new ArrayList<>();
 
