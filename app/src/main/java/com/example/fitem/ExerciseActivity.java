@@ -1,5 +1,6 @@
 package com.example.fitem;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.InputType;
@@ -30,7 +33,7 @@ public class ExerciseActivity extends AppCompatActivity {
     private TrainingDBHelper dbHelper;
     private Training training;
     private ExerciseAdapter adapter;
-
+    ActivityResultLauncher<Intent> exerciseDetailLauncher;
     private int currentTrainingId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,17 @@ public class ExerciseActivity extends AppCompatActivity {
         exercises = initializeExercises(currentTrainingId);
 
         this.dbHelper = new TrainingDBHelper(this);
+        exerciseDetailLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Odśwież listę ćwiczeń po zakończeniu ExerciseDetailsActivity
+                        exercises = initializeExercises(currentTrainingId);
+                        adapter.setExercises(exercises);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+        );
         ListView listView = (ListView) findViewById(R.id.exerciseListView);
         adapter = new ExerciseAdapter(this, exercises,dbHelper);
         listView.setAdapter(adapter);
@@ -53,8 +67,8 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ExerciseActivity.this, ExerciseDetailsActivity.class);
-                intent.putExtra("exercise", exercises.get(position));
-                startActivity(intent);
+                intent.putExtra("EXERCISE_ID", exercises.get(position).getId());
+                exerciseDetailLauncher.launch(intent);
             }
         });
 

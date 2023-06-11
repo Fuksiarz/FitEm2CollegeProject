@@ -2,6 +2,7 @@ package com.example.fitem;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.InputType;
@@ -30,8 +31,23 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_exercise_details);
 
         // Odczyt danych przekazanych z ExerciseActivity
-        this.exercise = (Exercise) getIntent().getSerializableExtra("exercise");
+        int exerciseId = getIntent().getIntExtra("EXERCISE_ID", -1);
+        if (exerciseId == -1) {
+            // W przypadku błędu zakończ aktywność
+            finish();
+            return;
+        }
+
+        // Utwórz nowy DBHelper
         trainingDBHelper = new TrainingDBHelper(this);
+
+        // Pobierz ćwiczenie z bazy danych
+        exercise = trainingDBHelper.getExerciseById(exerciseId);
+        if (exercise == null) {
+            // Jeśli ćwiczenie nie istnieje, zakończ aktywność
+            finish();
+            return;
+        }
         exerciseNameTextView = findViewById(R.id.exerciseName);
         repetitionsTextView = findViewById(R.id.repetitions);
         setsTextView = findViewById(R.id.sets);
@@ -74,21 +90,37 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                 LinearLayout layout = new LinearLayout(ExerciseDetailsActivity.this);
                 layout.setOrientation(LinearLayout.VERTICAL);
 
-                // Set up the inputs
+                // Set up the labels and inputs
+                final TextView nameLabel = new TextView(ExerciseDetailsActivity.this);
+                nameLabel.setText("Nazwa: ");
+                layout.addView(nameLabel);
+
                 final EditText inputName = new EditText(ExerciseDetailsActivity.this);
                 inputName.setInputType(InputType.TYPE_CLASS_TEXT);
                 inputName.setText(exercise.getName());
                 layout.addView(inputName);
+
+                final TextView repetitionsLabel = new TextView(ExerciseDetailsActivity.this);
+                repetitionsLabel.setText("Powtórzenia: ");
+                layout.addView(repetitionsLabel);
 
                 final EditText inputRepetitions = new EditText(ExerciseDetailsActivity.this);
                 inputRepetitions.setInputType(InputType.TYPE_CLASS_NUMBER);
                 inputRepetitions.setText(String.valueOf(exercise.getRepetitions()));
                 layout.addView(inputRepetitions);
 
+                final TextView setsLabel = new TextView(ExerciseDetailsActivity.this);
+                setsLabel.setText("Serie: ");
+                layout.addView(setsLabel);
+
                 final EditText inputSets = new EditText(ExerciseDetailsActivity.this);
                 inputSets.setInputType(InputType.TYPE_CLASS_NUMBER);
                 inputSets.setText(String.valueOf(exercise.getSets()));
                 layout.addView(inputSets);
+
+                final TextView countdownLabel = new TextView(ExerciseDetailsActivity.this);
+                countdownLabel.setText("Czas: ");
+                layout.addView(countdownLabel);
 
                 final EditText inputCountdownTime = new EditText(ExerciseDetailsActivity.this);
                 inputCountdownTime.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -96,7 +128,6 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                 layout.addView(inputCountdownTime);
 
                 builder.setView(layout);
-
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -110,6 +141,10 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                         exercise = trainingDBHelper.getExerciseById(exercise.getId());
                         // Update the TextViews to reflect the new exercise details
                         updateExerciseDetails();
+
+                        Intent resultIntent = new Intent();
+                        setResult(RESULT_OK, resultIntent);
+                        finish();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
