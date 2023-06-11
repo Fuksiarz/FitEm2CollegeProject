@@ -17,9 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ExerciseDetailsActivity extends AppCompatActivity {
     private Exercise exercise;
     private TextView exerciseNameTextView;
+    private TextView exerciseNameText;
     private TextView repetitionsTextView;
+    private TextView repetitionsText;
     private TextView setsTextView;
+    private TextView setsText;
     private TextView countdownTimeTextView;
+
+    private TextView countdownTimeText;
     private Button startTimerButton;
     private CountDownTimer countDownTimer;
 
@@ -49,10 +54,16 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             return;
         }
         exerciseNameTextView = findViewById(R.id.exerciseName);
+        exerciseNameText = findViewById(R.id.exerciseNameText);
         repetitionsTextView = findViewById(R.id.repetitions);
+
+        repetitionsText = findViewById(R.id.repetitionsText);
+
         setsTextView = findViewById(R.id.sets);
+        setsText = findViewById(R.id.setsText);
         startTimerButton = findViewById(R.id.startTimerButton);
         countdownTimeTextView = findViewById(R.id.countdownTime);
+        countdownTimeText = findViewById(R.id.countdownTimeText);
 
         exerciseNameTextView.setText(exercise.getName());
         repetitionsTextView.setText(String.valueOf(exercise.getRepetitions()));
@@ -144,7 +155,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
 
                         Intent resultIntent = new Intent();
                         setResult(RESULT_OK, resultIntent);
-                        finish();
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
