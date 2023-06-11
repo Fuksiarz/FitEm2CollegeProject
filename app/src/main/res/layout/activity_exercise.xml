@@ -14,7 +14,7 @@
         android:id="@+id/editExerciseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit" />
+        android:text="Edytuj" />
     <Button
         android:id="@+id/addExerciseButton"
         android:layout_width="match_parent"

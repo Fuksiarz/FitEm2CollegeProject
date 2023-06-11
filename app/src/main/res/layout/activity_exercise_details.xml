@@ -90,12 +90,12 @@
         android:id="@+id/startTimerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Timer" />
+        android:text="Włącz" />
 
     <Button
         android:id="@+id/editExerciseDetailsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edit" />
+        android:text="Edytuj" />
 
 </LinearLayout>

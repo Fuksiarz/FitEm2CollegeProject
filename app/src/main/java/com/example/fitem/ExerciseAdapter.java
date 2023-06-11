@@ -1,6 +1,7 @@
 package com.example.fitem;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,9 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
             @Override
             public void onClick(View v) {
                 Exercise exerciseToRemove = exercises.get(position);
+                Log.d("ExerciseAdapter", "Usuwanie Ćwiczenia o id: " +  exerciseToRemove.getId() );
                 exercises.remove(position); // Remove exercise
+
                 dbHelper.deleteExercise(exerciseToRemove);
                 notifyDataSetChanged(); // Refreshes the view
             }

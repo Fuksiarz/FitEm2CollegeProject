@@ -100,7 +100,7 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
 
     public void deleteExercise(Exercise exercise) {
         SQLiteDatabase db = this.getWritableDatabase();
-
+        Log.d("TrainingDBHelper", "Usuwanie Ćwiczenia o id: " +  exercise.getId() );
         // Usuń ćwiczenie
         db.delete(TABLE_EXERCISES, KEY_ID + " = ?", new String[]{String.valueOf(exercise.getId())});
 

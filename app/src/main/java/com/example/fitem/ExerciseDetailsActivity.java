@@ -79,11 +79,11 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
                 }
                 countDownTimer = new CountDownTimer(exercise.getCountdownTime() * 1000, 1000) {
                     public void onTick(long millisUntilFinished) {
-                        startTimerButton.setText("seconds remaining: " + millisUntilFinished / 1000);
+                        startTimerButton.setText("Pozostało sekund: " + millisUntilFinished / 1000);
                     }
 
                     public void onFinish() {
-                        startTimerButton.setText("done!");
+                        startTimerButton.setText("Gotowe!");
                     }
                 }.start();
             }
@@ -95,7 +95,7 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseDetailsActivity.this);
-                builder.setTitle("Edit exercise");
+                builder.setTitle("Edytuj ćwiczenie");
 
                 // Create layout for dialog
                 LinearLayout layout = new LinearLayout(ExerciseDetailsActivity.this);
