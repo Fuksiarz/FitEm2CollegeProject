@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "fitEm.db";
+    private static final String DATABASE_NAME = "Baza.db";
 
 //    private static final String DATABASE_NAME = "new_trainings.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_EXERCISES = "exercises";
     private static final String KEY_ID = "id";
+
     private static final String KEY_TRAINING_ID = "training_Id";
     private static final String KEY_NAME = "name";
     private static final String KEY_REPETITIONS = "repetitions";
@@ -57,13 +58,13 @@ public class TrainingDBHelper extends SQLiteOpenHelper {
             onCreate(db);
         }
     }
-    public void insertTraining(String name) {
+    public long insertTraining(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", name);
-        db.insert("trainings", null, contentValues);
+        long id = db.insert("trainings", null, contentValues);
         db.close();
-
+        return id;
     }
 
     public List<Training> getAllTrainings() {
