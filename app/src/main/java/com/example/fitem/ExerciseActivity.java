@@ -74,7 +74,7 @@ public class ExerciseActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(ExerciseActivity.this);
-                builder.setTitle("Dodaj ćwiczenie");
+                builder.setTitle("Dodaj cwiczenie");
 
                 // Ustaw EditText do wprowadzenia nazwy ćwiczenia
                 final EditText input = new EditText(ExerciseActivity.this);

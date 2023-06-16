@@ -19,6 +19,6 @@
         android:id="@+id/addExerciseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dodaj ćwiczenie"
+        android:text="Dodaj cwiczenie"
         android:layout_alignParentBottom="true" />
 </LinearLayout>

@@ -51,7 +51,7 @@ public class ExerciseAdapter extends ArrayAdapter<Exercise> {
             @Override
             public void onClick(View v) {
                 Exercise exerciseToRemove = exercises.get(position);
-                Log.d("ExerciseAdapter", "Usuwanie Ćwiczenia o id: " +  exerciseToRemove.getId() );
+                Log.d("ExerciseAdapter", "Usuwanie Cwiczenia o id: " +  exerciseToRemove.getId() );
                 exercises.remove(position); // Remove exercise
 
                 dbHelper.deleteExercise(exerciseToRemove);

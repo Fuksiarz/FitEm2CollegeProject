@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrainingDBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "Baza.db";
+    private static final String DATABASE_NAME = "Baza1.db";
 
 //    private static final String DATABASE_NAME = "new_trainings.db";
     private static final int DATABASE_VERSION = 1;
