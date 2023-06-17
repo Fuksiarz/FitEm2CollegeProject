@@ -74,16 +74,29 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if((exercise.getSets()) > 0){
+                    exercise.setSets(exercise.getSets()-1);
+                    updateExerciseDetails();
+
+                }
                 if (countDownTimer != null) {
                     countDownTimer.cancel();
+
                 }
                 countDownTimer = new CountDownTimer(exercise.getCountdownTime() * 1000, 1000) {
+
+
+
                     public void onTick(long millisUntilFinished) {
                         startTimerButton.setText("Pozostalo sekund: " + millisUntilFinished / 1000);
+
                     }
 
                     public void onFinish() {
                         startTimerButton.setText("Gotowe!");
+
+
                     }
                 }.start();
             }
