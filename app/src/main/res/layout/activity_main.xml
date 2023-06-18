@@ -2,24 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     android:orientation="vertical">
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:divider="#FF9365E6"
+        android:dividerHeight="1dp"
         android:layout_weight="1" />
 
     <Button
         android:id="@+id/editButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edytuj" />
+        android:textColor="#FFFFFF"
+        android:text="Edytuj"
+        android:background="#3F51B5"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/addTrainingButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dodaj trening" />
+        android:textColor="#FFFFFF"
+        android:text="Dodaj trening"
+        android:background="#4CAF50"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>

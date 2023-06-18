@@ -9,12 +9,17 @@
         android:id="@+id/trainingName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="#000000" />
+
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Usun"
+        android:text="Usuń"
+        android:textColor="#FFFFFF"
+        android:background="#FF0000"
+        android:layout_marginTop="8dp"
         android:visibility="gone" />
 
 </LinearLayout>

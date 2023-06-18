@@ -2,23 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     android:orientation="vertical">
 
     <ListView
         android:id="@+id/exerciseListView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:divider="#FF9365E6"
+        android:dividerHeight="1dp"
         android:layout_weight="1" />
 
     <Button
         android:id="@+id/editExerciseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
         android:text="Edytuj" />
+
     <Button
         android:id="@+id/addExerciseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Dodaj cwiczenie"
+        android:text="Dodaj ćwiczenie"
+        android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true" />
+
 </LinearLayout>

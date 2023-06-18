@@ -1,101 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/exerciseNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
             android:textSize="18sp"
-            android:text="Cwiczenie: " />
+            android:text="Ćwiczenie: "
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/exerciseName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2.8"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-    <TextView
-        android:id="@+id/repetitionsText"
-        android:layout_weight="0.05"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        android:text="Powtorzenia: "
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/repetitionsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Powtórzenia: "
+            android:textSize="18sp"
+            android:textColor="#000000" />
 
-    <TextView
-        android:id="@+id/repetitions"
-        android:layout_width="0dp"
-        android:layout_weight="1.6"
-        android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/repetitions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="#000000" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/setsText"
-        android:layout_width="wrap_content"
-        android:layout_weight="0.05"
-        android:layout_height="wrap_content"
-        android:text="Serie: "
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/setsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Serie: "
+            android:textSize="18sp"
+            android:textColor="#000000" />
 
-    <TextView
-        android:id="@+id/sets"
-        android:layout_width="0dp"
-        android:layout_weight="1.6"
-        android:layout_height="wrap_content"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/sets"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="#000000" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="horizontal">
+
         <TextView
             android:id="@+id/countdownTimeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.05"
             android:text="Czas: "
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#000000" />
 
         <TextView
-        android:id="@+id/countdownTime"
+            android:id="@+id/countdownTime"
             android:layout_width="0dp"
-            android:layout_weight="1.6"
-        android:layout_height="wrap_content"
-        android:textSize="18sp" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:textColor="#000000" />
     </LinearLayout>
+
     <Button
         android:id="@+id/startTimerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wlacz" />
+        android:text="Włącz"
+        android:textColor="#FFFFFF"
+        android:background="#3F51B5"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/editExerciseDetailsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Edytuj" />
+        android:text="Edytuj"
+        android:textColor="#FFFFFF"
+        android:background="#4CAF50"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
